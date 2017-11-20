@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.patches as mpatches
 
 high = 0.001
-low = 0.004
+low = 0.0045
 
 norm = Normalize(vmin=0,vmax=0.005)
 cmap=cm.get_cmap("rainbow")
@@ -16,7 +16,6 @@ x_labels = ["Clear","Light Dust","Dusty","Very Dusty"]
 
 fig, ax = plt.subplots()
 
-ax.patches.Fac
 ax.plot((-1,low),(1,1),lw=5,color="black")
 ax.plot((-1,high),(2,2),lw=5,color="black")
 
