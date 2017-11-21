@@ -29,6 +29,7 @@ import os
 from PIL import Image
 import glob
 from matplotlib.collections import PatchCollection
+from matplotlib.colors import Normalize
 # %%
 # =========================
 # # Parser:
@@ -59,16 +60,17 @@ print(time_now)
 StartTime = 0
 EndTime = 24
 
-nc_file = "/home/data/LIVE/MBR2/MMCR__MBR__Spectral_Moments__10s__155m-25km__" + date_str + ".nc"
-nc_meteo = "/home/data/LIVE/WEATHER/Meteorology__Deebles_Point__2m_10s__" + year_str + month_str + day_str + ".nc"
-image_path = "/home/data/LIVE/ALLSKY/"
+# nc_file = "/home/data/LIVE/MBR2/MMCR__MBR__Spectral_Moments__10s__155m-25km__" + date_str + ".nc"
+# nc_meteo = "/home/data/LIVE/WEATHER/Meteorology__Deebles_Point__2m_10s__" + year_str + month_str + day_str + ".nc"
+# image_path = "/home/data/LIVE/ALLSKY/"
 
-# nc_file = "/pool/OBS/BARBADOS_CLOUD_OBSERVATORY/Level_1/B_Reflectivity/Version_2/MMCR__MBR__Spectral_Moments__10s__155m-25km__"+date_str+".nc"
-# nc_meteo = "/pool/OBS/BARBADOS_CLOUD_OBSERVATORY/Level_1/I_Meteorology_2m/" + year_str + month_str + "/Meteorology__Deebles_Point__2m_10s__"+year_str + month_str + day_str +".nc"
-# image_path = "/pool/OBS/BARBADOS_CLOUD_OBSERVATORY/Level_0/1_Allskyimager/data/cc" + year_str[2:4] + month_str + "/" + day_str + "/sm" + year_str[2:4] + month_str + day_str + ".tgz"
+nc_file = "/pool/OBS/BARBADOS_CLOUD_OBSERVATORY/Level_1/B_Reflectivity/Version_2/MMCR__MBR__Spectral_Moments__10s__155m-25km__"+date_str+".nc"
+nc_meteo = "/pool/OBS/BARBADOS_CLOUD_OBSERVATORY/Level_1/I_Meteorology_2m/" + year_str + month_str + "/Meteorology__Deebles_Point__2m_10s__"+year_str + month_str + day_str +".nc"
+image_path = "image/"
 
 save_figures = "/home/data/LIVE/PLOT/"
-save_name = save_figures + 'QL_Live' + year_str + month_str + day_str + '.png'
+# save_name = save_figures + 'QL_Live' + year_str + month_str + day_str + '.png'
+save_name = "test.png"
 
 temp_folder = "temp_images_folder"  # Name for a tempurary created folder for extracting the images
 
@@ -294,11 +296,11 @@ ax11 = fig.add_subplot(gs1[45:53, :-40], sharex=ax1)  # WindDIR
 ax11 = ax4.twinx()  # WindSpeed
 ax5 = ax3.twinx()  # dewpoint temperature
 
-ax6 = fig.add_subplot(gs1[48:73, 71:94])  # Image
+ax6 = fig.add_subplot(gs1[38:63, 71:94])  # Image
 ax7 = fig.add_subplot(gs1[5:45, 68:100])  # Live-Data frame layer
 ax8 = fig.add_subplot(gs1[barb_y:barb_y + 8, barb_x:barb_x + 8])  # Live-Data-Windbarb
 ax9 = fig.add_subplot(gs1[5:45, 68:100], )  # Live-Data Text layer
-ax12 = fig.add_subplot(gs1[20:45, 71, 94])
+ax12 = fig.add_subplot(gs1[25:37, 71:94]) # Dust Index
 ax10 = fig.add_subplot(gs1[3:56, 67:68])  # Black bar
 
 # Adjusting appearance for all subplots:
@@ -584,6 +586,71 @@ ax8.barbs(1, 1, wind_u, wind_v, pivot='middle', length=10)  # wind_u and wind_v 
 ax8.set_xlim(0, 2)
 ax8.set_ylim(0, 2)
 # ax8.set_facecolor('white')
+
+
+# ======================================
+# Dust Index:
+# ======================================
+
+print("Plotting Dust Index...")
+high = 0.0045
+low = 0.002
+
+x_max = .005
+
+norm = Normalize(vmin=0,vmax=x_max)
+cmap=cm.get_cmap("rainbow")
+
+y_labels = ["Near Surface","Higher Atmosphere"]
+x_ticks = np.linspace(0,x_max,5)
+x_labels = ["Clear","Light Dust","Dusty","Very Dusty",""]
+
+
+
+ax12.plot((-1, low), (1, 1), lw=5, color="black")
+ax12.plot((-1, high), (2, 2), lw=5, color="black")
+
+
+ax12.scatter(low, 1, s=300, color=cmap(norm(low)), lw=3, zorder=10, edgecolors="black")
+ax12.scatter(high, 2, s=300, color=cmap(norm(high)), lw=3, zorder=10, edgecolors="black")
+
+ax12.set_xticklabels('')
+ax12.set_xticks(x_ticks)
+x_offset = x_max/8
+ax12.set_xticks([x+x_offset for x in x_ticks], minor=True)
+ax12.set_xticklabels("")
+
+
+ax12.tick_params(axis="x", width=0, color="white",which="both")
+ax12.tick_params(axis="y", width=0, color="white")
+
+ax12.set_yticks([1, 2]
+                )
+ax12.set_yticklabels([])
+ax12.grid(axis="x",ls="dashed")
+
+ax12.set_xlim(0, x_max)
+ax12.set_ylim(0, 3)
+
+
+ax12.text(0.735, 0.835, 'Dust Index', transform=ax12.transAxes,
+        verticalalignment='bottom', horizontalalignment='left',
+        bbox={'facecolor':'white', 'alpha':1, 'pad':10})
+
+ax12.text(0.02, 0.41, 'Near Surface',
+        verticalalignment='bottom', horizontalalignment='left',
+        transform=ax12.transAxes,
+        color='black', fontsize=box_font)
+
+ax12.text(0.02, 0.75, 'Higher Atmosphere',
+        verticalalignment='bottom', horizontalalignment='left',
+        transform=ax12.transAxes,
+        color='black', fontsize=box_font)
+
+ax12.text(0.07, 0.02, 'Clear       Light Dust      Dusty       Very Dusty',
+        verticalalignment='bottom', horizontalalignment='left',
+        transform=ax12.transAxes,
+        color='black', fontsize=box_font)
 
 # ======================================
 # Black bar for seperation:
