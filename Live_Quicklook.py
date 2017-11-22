@@ -30,6 +30,7 @@ from PIL import Image
 import glob
 from matplotlib.collections import PatchCollection
 from matplotlib.colors import Normalize
+from datetime import datetime as dt
 # %%
 # =========================
 # # Parser:
@@ -326,9 +327,13 @@ for ax in axes:
 ax4.set_xlabel('UTC Time', fontsize=ylabel_size)
 ax4.xaxis.set_label_position('bottom')
 
+
 # Setting up the x_axes for all plots:
-ax4.set_xticks(np.arange(min(secs), max(secs), 0.083333 / 2))  # Abstand xticks = 2h, 1 Minute = 0.000694
-ax4.set_xlim(min(secs), max(secs))
+max_date = mdate.num2date(secs[-1])
+x_axis_max = mdate.date2num(dt(max_date.year,max_date.month,max_date.day+1,0,0,0))
+x_axis_min = mdate.date2num(dt(max_date.year,max_date.month,max_date.day,0,0,0))
+ax4.set_xticks(np.arange(min(secs), x_axis_max, 0.083333 / 2))  # Abstand xticks = 2h, 1 Minute = 0.000694
+ax4.set_xlim(min(secs), x_axis_max)
 
 # ------------------------------------------------------------------------------------------------------------------------------------
 # =========================
