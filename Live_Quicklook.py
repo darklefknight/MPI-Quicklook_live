@@ -31,6 +31,7 @@ import glob
 from matplotlib.collections import PatchCollection
 from matplotlib.colors import Normalize
 from datetime import datetime as dt
+from DustIndex import DustIndex
 # %%
 # =========================
 # # Parser:
@@ -67,6 +68,7 @@ EndTime = 24
 
 nc_file = "/pool/OBS/BARBADOS_CLOUD_OBSERVATORY/Level_1/B_Reflectivity/Version_2/MMCR__MBR__Spectral_Moments__10s__155m-25km__"+date_str+".nc"
 nc_meteo = "/pool/OBS/BARBADOS_CLOUD_OBSERVATORY/Level_1/I_Meteorology_2m/" + year_str + month_str + "/Meteorology__Deebles_Point__2m_10s__"+year_str + month_str + day_str +".nc"
+nc_lidar = "/pool/OBS/ACPC/RamanLidar-LICHT/3_QuickLook/nc/ql{}/".format(yyyymmdd[2:6])
 image_path = "image/"
 
 save_figures = "/home/data/LIVE/PLOT/"
@@ -598,15 +600,15 @@ ax8.set_ylim(0, 2)
 # ======================================
 
 print("Plotting Dust Index...")
-high = 0.0045
-low = 0.002
+high = DustIndex(yyyymmdd,nc_lidar).DI_high
+low = DustIndex(yyyymmdd,nc_lidar).DI_low
 
-x_max = .005
+x_max = .01
 
 norm = Normalize(vmin=0,vmax=x_max)
 cmap=cm.get_cmap("rainbow")
 
-y_labels = ["Near Surface","Higher Atmosphere"]
+
 x_ticks = np.linspace(0,x_max,5)
 x_labels = ["Clear","Light Dust","Dusty","Very Dusty",""]
 
@@ -642,12 +644,12 @@ ax12.text(0.735, 0.835, 'Dust Index', transform=ax12.transAxes,
         verticalalignment='bottom', horizontalalignment='left',
         bbox={'facecolor':'white', 'alpha':1, 'pad':10})
 
-ax12.text(0.02, 0.41, 'Near Surface',
+ax12.text(0.02, 0.41, 'Near Surface (Below 2km)',
         verticalalignment='bottom', horizontalalignment='left',
         transform=ax12.transAxes,
         color='black', fontsize=box_font)
 
-ax12.text(0.02, 0.75, 'Higher Atmosphere',
+ax12.text(0.02, 0.75, 'Higher Up (Above 2km)',
         verticalalignment='bottom', horizontalalignment='left',
         transform=ax12.transAxes,
         color='black', fontsize=box_font)
