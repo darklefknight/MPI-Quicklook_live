@@ -603,7 +603,7 @@ print("Plotting Dust Index...")
 high = DustIndex(yyyymmdd,nc_lidar).DI_high
 low = DustIndex(yyyymmdd,nc_lidar).DI_low
 
-x_max = .06
+x_max = .01
 
 norm = Normalize(vmin=0,vmax=x_max)
 cmap=cm.get_cmap("rainbow")

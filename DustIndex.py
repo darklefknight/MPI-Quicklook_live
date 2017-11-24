@@ -9,12 +9,6 @@ class DustIndex:
         self.dataFrame = self.__openNcFile(datestr,NC_PATH)
         self.DI_low,self.DI_high,self.updateTime = self.__getDI()
 
-        if self.DI_high > 0.6:
-            self.DI_high = 0.6
-
-        if self.DI_low > 0.6:
-            self.DI_low = 0.6
-
 
     def __openNcFile(self,datestr,NC_PATH):
         # Parameter:
