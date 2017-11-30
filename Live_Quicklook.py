@@ -603,25 +603,19 @@ print("Plotting Dust Index...")
 high = DustIndex(yyyymmdd,nc_lidar).DI_high
 low = DustIndex(yyyymmdd,nc_lidar).DI_low
 
-low = 0.06
-high= 0.0009
-
-x_max = .06
+x_max = .01
 
 norm = Normalize(vmin=0,vmax=x_max)
 cmap=cm.get_cmap("rainbow")
 
-x_ticks = [np.power() for x in range(5)]
+
+x_ticks = np.linspace(0,x_max,5)
 x_labels = ["Clear","Light Dust","Dusty","Very Dusty",""]
 
-xlow_vals = np.linspace(0,low,100)
-xhigh_vals = np.linspace(0,high,100)
 
-ylow_vals = [1 for x in range(100)]
-yhigh_vals = [2 for x in range(100)]
 
-ax12.semilogx(xhigh_vals, yhigh_vals, lw=5, color="black")
-ax12.semilogx(xlow_vals, ylow_vals, lw=5, color="black")
+ax12.plot((-1, low), (1, 1), lw=5, color="black")
+ax12.plot((-1, high), (2, 2), lw=5, color="black")
 
 
 ax12.scatter(low, 1, s=300, color=cmap(norm(low)), lw=3, zorder=10, edgecolors="black")
@@ -633,10 +627,12 @@ x_offset = x_max/8
 ax12.set_xticks([x+x_offset for x in x_ticks], minor=True)
 ax12.set_xticklabels("")
 
+
 ax12.tick_params(axis="x", width=0, color="white",which="both")
 ax12.tick_params(axis="y", width=0, color="white")
 
-ax12.set_yticks([1, 2])
+ax12.set_yticks([1, 2]
+                )
 ax12.set_yticklabels([])
 ax12.grid(axis="x",ls="dashed")
 
@@ -644,7 +640,7 @@ ax12.set_xlim(0, x_max)
 ax12.set_ylim(0, 3)
 
 
-ax12.text(0.748, 0.842, 'Dust Load', transform=ax12.transAxes,
+ax12.text(0.735, 0.835, 'Dust Index', transform=ax12.transAxes,
         verticalalignment='bottom', horizontalalignment='left',
         bbox={'facecolor':'white', 'alpha':1, 'pad':10})
 
@@ -678,5 +674,5 @@ ax10.plot(1)
 # Saving the Figure:
 # ======================================
 print('saving figure...')
-plt.savefig(save_name, facecolor=fig.get_facecolor(), edgecolor='none',bbox_inches="tight")
+plt.savefig(save_name, facecolor=fig.get_facecolor(), edgecolor='none')
 print('saved')
