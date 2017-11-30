@@ -603,7 +603,7 @@ print("Plotting Dust Index...")
 high = DustIndex(yyyymmdd,nc_lidar).DI_high
 low = DustIndex(yyyymmdd,nc_lidar).DI_low
 
-x_max = .01
+x_max = .06
 
 norm = Normalize(vmin=0,vmax=x_max)
 cmap=cm.get_cmap("rainbow")
@@ -640,7 +640,7 @@ ax12.set_xlim(0, x_max)
 ax12.set_ylim(0, 3)
 
 
-ax12.text(0.745, 0.835, 'Dust Load', transform=ax12.transAxes,
+ax12.text(0.748, 0.84, 'Dust Load', transform=ax12.transAxes,
         verticalalignment='bottom', horizontalalignment='left',
         bbox={'facecolor':'white', 'alpha':1, 'pad':10})
 
