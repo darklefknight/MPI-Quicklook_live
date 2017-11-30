@@ -640,7 +640,7 @@ ax12.set_xlim(0, x_max)
 ax12.set_ylim(0, 3)
 
 
-ax12.text(0.735, 0.835, 'Dust Index', transform=ax12.transAxes,
+ax12.text(0.745, 0.835, 'Dust Load', transform=ax12.transAxes,
         verticalalignment='bottom', horizontalalignment='left',
         bbox={'facecolor':'white', 'alpha':1, 'pad':10})
 
@@ -674,5 +674,5 @@ ax10.plot(1)
 # Saving the Figure:
 # ======================================
 print('saving figure...')
-plt.savefig(save_name, facecolor=fig.get_facecolor(), edgecolor='none')
+plt.savefig(save_name, facecolor=fig.get_facecolor(), edgecolor='none', bbox_inches='tight')
 print('saved')
