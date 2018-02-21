@@ -72,8 +72,7 @@ nc_lidar = "/pool/OBS/ACPC/RamanLidar-LICHT/3_QuickLook/nc/ql{}/".format(yyyymmd
 image_path = "image/"
 
 save_figures = "/home/data/LIVE/PLOT/"
-# save_name = save_figures + 'QL_Live' + year_str + month_str + day_str + '.png'
-save_name = "test.png"
+save_name = save_figures + 'QL_Live' + year_str + month_str + day_str + '.png'
 
 temp_folder = "temp_images_folder"  # Name for a tempurary created folder for extracting the images
 
@@ -332,8 +331,10 @@ ax4.xaxis.set_label_position('bottom')
 
 # Setting up the x_axes for all plots:
 max_date = mdate.num2date(secs[-1])
-x_axis_max = mdate.date2num(dt(max_date.year,max_date.month,max_date.day+1,0,0,0))
-x_axis_min = mdate.date2num(dt(max_date.year,max_date.month,max_date.day,0,0,0))
+min_date = mdate.num2date(secs[10])
+x_axis_min = mdate.date2num(dt(min_date.year,min_date.month,min_date.day,0,0,0))
+x_axis_max = mdate.date2num(dt(min_date.year,min_date.month,min_date.day,23,59,59))
+
 ax4.set_xticks(np.arange(min(secs), x_axis_max, 0.083333 / 2))  # Abstand xticks = 2h, 1 Minute = 0.000694
 ax4.set_xlim(min(secs), x_axis_max)
 
@@ -612,6 +613,8 @@ cmap=cm.get_cmap("rainbow")
 x_ticks = np.linspace(0,x_max,5)
 x_labels = ["Clear","Light Dust","Dusty","Very Dusty",""]
 
+# x_ticks = np.linspace(0,x_max,4)
+# x_labels = ["Low","Medium", "High",""]
 
 
 ax12.plot((-1, low), (1, 1), lw=5, color="black")
@@ -658,6 +661,11 @@ ax12.text(0.07, 0.02, 'Clear       Light Dust      Dusty       Very Dusty',
         verticalalignment='bottom', horizontalalignment='left',
         transform=ax12.transAxes,
         color='black', fontsize=box_font)
+
+# ax12.text(0.07, 0.02, '   Low                 Medium                 High',
+#         verticalalignment='bottom', horizontalalignment='left',
+#         transform=ax12.transAxes,
+#         color='black', fontsize=box_font)
 
 # ======================================
 # Black bar for seperation:
