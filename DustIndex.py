@@ -37,7 +37,10 @@ class DustIndex:
         time = self.np.asarray(time)
 
         df = self.pd.DataFrame({'time': time, 'DIL': dustIndexLow, 'DIH': dustIndexHigh})
-        # df = df[::-1]  # reverse columns
+        l_idx = df[["DIL","DIH"]].last_valid_index()
+
+        df = df[:l_idx]
+
         return df
 
     def __getDI(self):
@@ -47,3 +50,8 @@ class DustIndex:
         __ts = self.pd.to_datetime(str(__up_time))
         __d = __ts.strftime('%Y %m %d, %H:%M:%S')
         return(__dil,__dih,__d)
+
+
+
+if __name__ == "__main__":
+    di = DustIndex("20180320","/pool/OBS/ACPC/RamanLidar-LICHT/3_QuickLook/nc/ql1803/")

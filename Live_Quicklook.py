@@ -71,7 +71,8 @@ nc_meteo = "/pool/OBS/BARBADOS_CLOUD_OBSERVATORY/Level_1/I_Meteorology_2m/" + ye
 nc_lidar = "/pool/OBS/ACPC/RamanLidar-LICHT/3_QuickLook/nc/ql{}/".format(yyyymmdd[2:6])
 image_path = "image/"
 
-save_figures = "/home/data/LIVE/PLOT/"
+# save_figures = "/home/data/LIVE/PLOT/"
+save_figures = ""
 save_name = save_figures + 'QL_Live' + year_str + month_str + day_str + '.png'
 
 temp_folder = "temp_images_folder"  # Name for a tempurary created folder for extracting the images
